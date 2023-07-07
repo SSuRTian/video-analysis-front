@@ -298,7 +298,7 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 
 .register-container {
-    background-image: url(../../assets/background/1501683013732_.pic_hd.jpg);
+    background-image: url(../../assets/background/registerbg.jpg);
     background-size: 100% 100%;
     min-height: 100%;
     width: 100%;
