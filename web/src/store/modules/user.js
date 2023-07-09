@@ -1,5 +1,4 @@
 import { login, logout, getInfo } from '@/api/user'
-import { send } from '@/api/form'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -35,20 +34,24 @@ const mutations = {
 
 const actions = {
     //user login
-    login ({ commit }, userInfo) {
+    login({ commit }, userInfo) {
         //解构赋值获取值
         const { username, password } = userInfo
         return new Promise((resolve, reject) => {
-          login({ username: username.trim(), password: password }).then(response => {
-            const { data } = response
-            commit('SET_TOKEN', data.token) 
-            setToken(data.token)
-            resolve()
-          }).catch(error => {
-            reject(error)
-          })
+            debugger
+            //使用 trim() 方法来去除用户名前后的空格，避免进一步处理中出现空格导致的问题。
+            login({ username: username.trim(), password: password }).then(response => {
+                console.log("进入login方法")
+                
+                const { data } = response
+                commit('SET_TOKEN', data.token)
+                setToken(data.token)
+                resolve()
+            }).catch(error => {
+                reject(error)
+            })
         })
-      }
+    }
 }
 
 export default {
@@ -56,5 +59,4 @@ export default {
     state,
     mutations,
     actions
-  }
-  
+}

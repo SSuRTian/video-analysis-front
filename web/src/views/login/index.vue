@@ -63,9 +63,8 @@
 </template>
 
 <script>
-import router from '@/router'
 import Vue from 'vue'
-import { validUsername } from '@/utils/validate'
+import store from '@/store'
 
 export default {
     name: 'LoginIndex',
@@ -96,8 +95,8 @@ export default {
 
         return {
             pwdLoginForm: {
-                username: 'admin',
-                password: '123456'
+                username: 'gxc',
+                password: 'qwe123123'
             },
             pwdLoginFormRules: {
                 username: [{ required: true, message: '请输入你的账号', trigger: 'blur', validator: validateUsername }],
@@ -119,9 +118,19 @@ export default {
         }
 
     },
+    watch: {
+    $route: {
+      handler: function (route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
+  },
     methods: {
         pwdLogin() {
-            this.$refs.pwdLoginForm.validate(valid => {
+            debugger
+            console.log(this.pwdLoginForm.username)
+            this.$refs.pwdLoginFormRef.validate(valid => {
                 //将username保存到 Vue 实例的原型对象上，以便在其他组件中访问
                 Vue.prototype.$userName = this.pwdLoginForm.username;
                 if (valid) {
