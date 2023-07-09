@@ -78,7 +78,7 @@ import Vue from 'vue'
 import VueParticles from 'vue-particles'
 Vue.use(VueParticles)
 import SIdentify from './verify.vue';
-// import { register } from '@/register'
+import {register} from'@/api/register';
 // import { encrypt } from '@/utils/rsaEncrypt'
 // import identify from '@/views/verifyCode/index.vue'
 export default {
@@ -91,12 +91,12 @@ export default {
             isDisable: false,
             codeLoading: false,
             ruleForm: {
-                username: '',
-                nickname: '',
-                email: '',
+                username: 'yhd',
+                nickname: 'aaa',
+                email: '123@163.com',
                 code: '',
-                pwd: '',
-                cpwd: ''
+                pwd: '123456q',
+                cpwd: '123456q'
             },
 
             identifyCodes: '1234567890abcdefjhijklinopqrsduvwxyz',//随机串内容
@@ -127,27 +127,34 @@ export default {
                     message: '请输入验证码',
                     trigger: 'blur'
                 }],
-                pwd: [{
-                    required: true,
-                    message: '创建密码',
-                    trigger: 'blur'
-                }, { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/, message: '密码必须同时包含数字与字母,且长度为 6-20位' }],
-                cpwd: [{
-                    required: true,
-                    message: '确认密码',
-                    trigger: 'blur'
-                }, {
-                    validator: (rule, value, callback) => {
-                        if (value === '') {
-                            callback(new Error('请再次输入密码'))
-                        } else if (value !== this.ruleForm.pwd) {
-                            callback(new Error('两次输入密码不一致'))
-                        } else {
-                            callback()
-                        }
+                pwd: [
+                    {
+                        required: true,
+                        message: '创建密码',
+                        trigger: 'blur'
                     },
-                    trigger: 'blur'
-                }]
+                    {
+                        pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,20}$/,
+                        message: '密码必须同时包含数字与字母,且长度为 6-20位'
+                    }],
+                cpwd: [
+                    {
+                        required: true,
+                        message: '确认密码',
+                        trigger: 'blur'
+                    },
+                    {
+                        validator: (rule, value, callback) => {
+                            if (value === '') {
+                                callback(new Error('请再次输入密码'))
+                            } else if (value !== this.ruleForm.pwd) {
+                                callback(new Error('两次输入密码不一致'))
+                            } else {
+                                callback()
+                            }
+                        },
+                        trigger: 'blur'
+                    }]
             },
         }
     },
@@ -183,14 +190,18 @@ export default {
                 return
             }
 
-            this.$refs['ruleForm'].validate((valid) => {
+            //表单验证
+            this.$refs.ruleForm.validate((valid) => {
+                // debugger
                 if (valid) {
                     let aData = new Date();
                     var month = 1 + aData.getMonth();
                     if (month.toString().length == 1) {
                         month = "0" + month;
                     }
+
                     console.log(month);
+
                     const user = {
                         username: this.ruleForm.username,
                         nickname: this.ruleForm.nickname,
@@ -199,6 +210,8 @@ export default {
                         userface: null,
                         regtime: aData.getFullYear() + "-" + month + "-" + aData.getDate() + " " + aData.getHours() + ":" + aData.getMinutes() + ":" + aData.getSeconds()
                     }
+
+                    // debugger
                     register(user).then(res => {
                         console.log(res)
                         this.$message({
@@ -207,11 +220,16 @@ export default {
                             type: 'success'
                         })
                         setTimeout(() => {
-                            this.$router.push('/')
+                            //跳转
+                            this.$router.push('/login')
                         }, 2000)
                     }).catch(err => {
-                        this.$message.error(err.response.data.message)
-                        console.log(err.response.data.message)
+
+                        //promise遭拒，运行时到此停止
+                        this.$router.push('/')
+
+                        // this.$message.error(err.response.data.message)
+                        // console.log(err.response.data.message)
                     })
                 }
             })
@@ -300,6 +318,7 @@ $light_gray: #eee;
 .register-container {
     background-image: url(../../assets/background/registerbg.jpg);
     background-size: 100% 100%;
+    position: fixed;
     min-height: 100%;
     width: 100%;
     background-color: $bg;

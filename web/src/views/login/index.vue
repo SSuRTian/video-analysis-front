@@ -119,48 +119,58 @@ export default {
 
     },
     watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
+        $route: {
+            handler: function (route) {
+                this.redirect = route.query && route.query.redirect
+            },
+            immediate: true
+        }
+    },
     methods: {
         pwdLogin() {
-            debugger
+            // debugger
             console.log(this.pwdLoginForm.username)
+            //表单验证
             this.$refs.pwdLoginFormRef.validate(valid => {
                 //将username保存到 Vue 实例的原型对象上，以便在其他组件中访问
                 Vue.prototype.$userName = this.pwdLoginForm.username;
                 if (valid) {
+                    // debugger
                     //在这里使用axio与后端对接,获得账号密码键值对,然后匹配,查看是否能够登录
                     if (this.pwdLoginForm.password == '111111') {
                         this.loading = true
                         Vue.prototype.$userName = this.pwdLoginForm.username;
                         //store中的逻辑
-                        this.$store.dispatch('user/login', this.pwdLoginForm).then(() => {
-                            alert("登录成功")
-                            // this.$router.push({ path: this.redirect || '/' })
-                            this.$router.push('/layout')
-                            console.log('跳转后的路由地址:', this.$route.fullPath)
-                            this.loading = false
-                        }).catch(() => {
-                            this.loading = false
-                        })
+                        this.$store.dispatch('user/login', this.pwdLoginForm).then(
+                            () => {
+                                alert("登录成功")
+                                // this.$router.push({ path: this.redirect || '/' })
+                                this.$router.push('/layout')
+                                console.log('跳转后的路由地址:', this.$route.fullPath)
+                                this.loading = false
+                            }
+                        ).catch(
+                            () => {
+                                this.loading = false
+                            }
+                        )
                     }
                     else {
                         this.loading = true
-                        this.$store.dispatch('user/login', this.pwdLoginForm).then(() => {
-                            alert("登录成功!")
-                            this.$router.push('/layout')
-                            console.log('跳转后的路由地址:', this.$route.fullPath)
-                            this.loading = false
-                        }).catch(() => {
-                            this.loading = false
-                        })
+                        this.$store.dispatch('user/login', this.pwdLoginForm).then(
+                            () => {
+                                alert("登录成功!")
+                                this.$router.push('/layout')
+                                console.log('跳转后的路由地址:', this.$route.fullPath)
+                                this.loading = false
+                            }).catch(
+                                () => {
+                                    this.loading = false
+                                })
                     }
-                } else {
+                }
+                //invaild
+                else {
                     console.log('error submit!!')
                     return false
                 }
@@ -175,7 +185,7 @@ export default {
             })
         },
         toRegister() {
-            this.$router.push( '/register')
+            this.$router.push('/register')
         },
     }
 }
@@ -230,11 +240,11 @@ export default {
 }
 
 .el-tabs>>>.el-tabs__item:hover {
-    color: #fff;
+    color: #fff;   /**这里改变鼠标移至选中项后颜色变化：黑-》白 */
     cursor: pointer;
 }
 
-.el-tabs>>>.el-tabs__item.is-active {
+.el-tabs>>>.el-tabs__item.is-active {   /**这里用来改变登录页头选中后颜色变化 黑-》紫 */
     color: #c915e5;
 }
 
@@ -255,7 +265,7 @@ export default {
 }
 
 .el-input>>>.el-input__inner {
-    background-color: rgba(225, 225, 225, 0);
+    background-color: rgba(225, 225, 225, 0); /**这里改变输入框底色 */
     box-shadow: 0 0 2px #fff;
     border: 1px solid #fff;
 }
