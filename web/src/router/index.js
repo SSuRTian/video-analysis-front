@@ -17,7 +17,10 @@ const router = new VueRouter({
 
     //添加了用户信息、视频信息（简略&详细）的路径  ---sl
     {path:  '/usermanage', component: () => import('@/views/admin/userManage.vue')}, //用户信息路径
-    {path:  '/vedioinfo', component: () =>import('@/views/admin/VedioInfoView.vue')} //简略视频信息路径
+    {path:  '/vedioinfo', component: () =>import('@/views/admin/VedioInfoView.vue')}, //简略视频信息路径
+    {path:  '/dangerimg', component: () =>import('@/views/admin/dangerImgPush.vue')},  //上传黑名单人员照片
+    {path:  '/trustimg', component: () =>import('@/views/admin/trustImgPush.vue')}    //上传信任人员照片
+
   ]
 })
 
